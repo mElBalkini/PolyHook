@@ -339,11 +339,14 @@ namespace PLH {
 		template<typename T>
 		T GetOriginal()
 		{
-			return (T)m_Trampoline;
+			if (m_Hooked)
+				return (T)m_Trampoline;
+			else
+				return nullptr;
 		}
 	protected:
 		template<typename T>
-		T CalculateRelativeDisplacement(uintptr_t From,uintptr_t To, uint_fast32_t InsSize)
+		T CalculateRelativeDisplacement(uintptr_t From, uintptr_t To, uint_fast32_t InsSize)
 		{
 			if (To < From)
 				return 0 - (From - To) - InsSize;
@@ -364,11 +367,11 @@ namespace PLH {
 
 		uint8_t m_OriginalCode[64];
 		uint_fast32_t m_OriginalLength;
-		uint8_t* m_Trampoline;
+		uint8_t* m_Trampoline = nullptr;
 		bool m_NeedFree;
 		bool m_Hooked;
-		uint8_t* m_hkSrc;
-		uint8_t* m_hkDest;
+		uint8_t* m_hkSrc = nullptr;
+		uint8_t* m_hkDest = nullptr;
 		uint_fast32_t m_hkLength;
 		cs_mode m_CapMode;
 	};
