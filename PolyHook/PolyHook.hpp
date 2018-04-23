@@ -554,7 +554,10 @@ namespace PLH {
 		template<typename T>
 		T GetOriginal()
 		{
-			return (T)m_pIATFuncOrig;
+			if (m_Hooked)
+				return (T)m_pIATFuncOrig;
+			else
+				return nullptr;
 		}
 		void SetupHook(const char* LibraryName,const char* SrcFunc, uint8_t* Dest,const char* Module = "");
 	private:
@@ -562,8 +565,8 @@ namespace PLH {
 		std::string m_hkSrcFunc;
 		std::string m_hkLibraryName;
 		std::string m_hkModuleName;
-		uint8_t* m_hkDest;
-		void* m_pIATFuncOrig;
+		uint8_t* m_hkDest = nullptr;
+		void* m_pIATFuncOrig = nullptr;
 		bool m_Hooked;
 	};
 
